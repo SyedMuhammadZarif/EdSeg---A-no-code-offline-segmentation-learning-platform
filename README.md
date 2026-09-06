@@ -7,7 +7,7 @@
 **Learn deep learning by training your own medical image segmentation model.**
 
 A desktop app for medical imaging students to learn the fundamentals of deep learning — hands-on, no coding required.
-
+Direct Download for Windows (extract and run, no installation): https://drive.google.com/file/d/1ClNAU_mkHNnzlQDilBhAa9ydD4ia8BnC/view?usp=sharing
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-CPU%20%7C%20CUDA-ee4c2c)](https://pytorch.org/)
 [![Flask](https://img.shields.io/badge/Flask-backend-black)](https://flask.palletsprojects.com/)
