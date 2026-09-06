@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="insert image link here" alt="EdSeg logo" width="96" />
+<img src="https://i.postimg.cc/76Hrwc9F/icon.jpg" width="24" />
 
 # EdSeg
 
@@ -18,10 +18,13 @@ A desktop app for medical imaging students to learn the fundamentals of deep lea
 
 ---
 
-## Screenshot
+## Screenshots
 
 <div align="center">
-<img src="insert image link here" alt="EdSeg dataset selection screen" width="800" />
+<img src="https://i.postimg.cc/PqL2ZMxP/image1.webp" width="800" />
+<img src="https://i.postimg.cc/Bv8MDC6t/image02.webp" width="800" />
+<img src="https://i.postimg.cc/k5Vf8y45/image-2.webp" width="800" />
+<img src="https://i.postimg.cc/Zq9V3LRW/image3.webp" width="800" />
 </div>
 
 ## Overview
@@ -39,9 +42,6 @@ architecture, or the amount of training data.
 
 ## Features
 
-<div align="center">
-<img src="insert image link here" alt="EdSeg training screen with live charts" width="800" />
-</div>
 
 ### Core workflow
 - 📊 **Dataset management** — use the bundled sample dataset or upload your own (`images/` + `masks/` zip)
@@ -58,9 +58,6 @@ architecture, or the amount of training data.
 - 📚 **Concepts panel** — a built-in glossary explaining loss functions, overfitting, Dice score, and more, in plain language
 - 🌗 **Light & dark themes**
 
-<div align="center">
-<img src="insert image link here" alt="EdSeg results screen with confusion matrix" width="800" />
-</div>
 
 ## Supported model architectures
 
@@ -113,9 +110,7 @@ Your app appears at `dist/EdSeg/EdSeg.exe` (Windows) or `dist/EdSeg/EdSeg.app` (
 
 ## How it works
 
-<div align="center">
-<img src="insert image link here" alt="EdSeg architecture diagram" width="700" />
-</div>
+
 
 EdSeg pairs a lightweight **Flask + PyTorch backend** with a browser-based
 frontend, wrapped in a native desktop window via
@@ -174,7 +169,7 @@ checkpoints are stored where they are, etc.).
 
 ## License
 
-This project is licensed under the MIT License — see the `LICENSE` file for details. *(Add a `LICENSE` file to the repo root, or replace this section if using a different license.)*
+Open Source
 
 ---
 
