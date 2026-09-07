@@ -14,7 +14,7 @@ A desktop app for medical imaging students to learn the fundamentals of deep lea
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey)]()
 [![License](https://img.shields.io/badge/license-Open%20Source-brightgreen)]()
 
-**[⬇️ Download for Windows](https://drive.google.com/file/d/1ClNAU_mkHNnzlQDilBhAa9ydD4ia8BnC/view?usp=sharing)** &nbsp;·&nbsp; **[⬇️ Download for Mac (coming soon)](#)**
+**[⬇️ Download for Windows](https://drive.google.com/file/d/1ClNAU_mkHNnzlQDilBhAa9ydD4ia8BnC/view?usp=sharing)** &nbsp;·&nbsp; **[⬇️ Download for Mac](https://drive.google.com/file/d/1KKf73MwBig9xoRCB49N-I_iq6IRz55ia/view)**
 
 </div>
 
