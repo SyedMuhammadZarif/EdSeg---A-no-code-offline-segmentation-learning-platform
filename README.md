@@ -14,7 +14,7 @@ A desktop app for medical imaging students to learn the fundamentals of deep lea
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey)]()
 [![License](https://img.shields.io/badge/license-Open%20Source-brightgreen)]()
 
-**[⬇️ Download for Windows](https://drive.google.com/file/d/1ClNAU_mkHNnzlQDilBhAa9ydD4ia8BnC/view?usp=sharing)** &nbsp;·&nbsp; **[⬇️ Download for Mac](https://drive.google.com/file/d/1KKf73MwBig9xoRCB49N-I_iq6IRz55ia/view)**
+**[⬇️ Download for Windows CUDA+CPU support](https://drive.google.com/file/d/1ClNAU_mkHNnzlQDilBhAa9ydD4ia8BnC/view?usp=sharing)** &nbsp;·&nbsp; **[⬇️ Download for Windows Lite Version (CPU Only)](https://drive.google.com/file/d/1g2d8emD4bNysEY3YSSM8y1v1na4PBy87/view?usp=sharing)** &nbsp;·&nbsp; **[⬇️ Download for Mac](https://drive.google.com/file/d/1KKf73MwBig9xoRCB49N-I_iq6IRz55ia/view)**
 
 </div>
 
@@ -105,7 +105,7 @@ No Python, no dependencies, no admin rights required — just download, extract,
 
 ### 🪟 Windows
 
-1. **Download** the app: **[EdSeg for Windows](https://drive.google.com/file/d/1ClNAU_mkHNnzlQDilBhAa9ydD4ia8BnC/view?usp=sharing)**
+1. **Download** the app: **[EdSeg for Windows](https://drive.google.com/file/d/1ClNAU_mkHNnzlQDilBhAa9ydD4ia8BnC/view?usp=sharing)** (Lite version linked at top of Readme)
 2. **Extract the zip fully** to a normal folder (Desktop, Documents, etc.) — don't run it from inside the zip
 3. Open the extracted `EdSeg` folder and **double-click `EdSeg.exe`**
 4. Windows will likely show a **"Windows protected your PC"** SmartScreen warning, since this isn't a signed commercial app:
@@ -119,7 +119,7 @@ No Python, no dependencies, no admin rights required — just download, extract,
 
 ### 🍎 Mac
 
-1. **Download** the app: **[EdSeg for Mac](#)**
+1. **Download** the app: **[EdSeg for Mac](https://drive.google.com/file/d/1KKf73MwBig9xoRCB49N-I_iq6IRz55ia/view)**
 2. **Extract the zip** if it isn't already
 3. **Right-click** `EdSeg.app` → **Open** (don't double-click the first time)
 4. macOS will warn that the app is from an "unidentified developer" — click **Open** again to confirm
