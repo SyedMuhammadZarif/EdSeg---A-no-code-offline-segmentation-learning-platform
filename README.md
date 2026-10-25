@@ -6,60 +6,76 @@
 
 **Learn deep learning by training your own medical image segmentation model.**
 
-A desktop app for medical imaging students to learn the fundamentals of deep learning — hands-on, no coding required.
+A desktop app for medical imaging students to learn the fundamentals of deep learning — hands-on, no coding required. Now with **13 lightweight models** and **3D volume segmentation**.
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-CPU%20%7C%20CUDA-ee4c2c)](https://pytorch.org/)
 [![Flask](https://img.shields.io/badge/Flask-backend-black)](https://flask.palletsprojects.com/)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey)]()
-[![License](https://img.shields.io/badge/license-Open%20Source-brightgreen)]()
-
-**[⬇️ Download for Windows CUDA+CPU support](https://drive.google.com/file/d/1ClNAU_mkHNnzlQDilBhAa9ydD4ia8BnC/view?usp=sharing)** &nbsp;·&nbsp; **[⬇️ Download for Windows Lite Version (CPU Only)](https://drive.google.com/file/d/1g2d8emD4bNysEY3YSSM8y1v1na4PBy87/view?usp=sharing)** &nbsp;·&nbsp; **[⬇️ Download for Mac](https://drive.google.com/file/d/1KKf73MwBig9xoRCB49N-I_iq6IRz55ia/view)**
+[![License: MIT](https://img.shields.io/badge/license-MIT-brightgreen)](./LICENSE)
 
 </div>
+
+---
+
+## Downloads and how big they are
+
+| Build | Download (zip) | On disk | Notes |
+|---|---|---|---|
+| **Windows — CPU-only (recommended)** | **≈ 165 MB** | **≈ 470 MB** | Works on every computer. Trains on the processor. |
+| **Windows — CUDA + CPU** | ≈ 2.8 GB (estimate) | ≈ 5.6 GB (estimate) | Adds NVIDIA GPU training. Only worth it with an NVIDIA GPU. |
+| Mac | not rebuilt yet — PyInstaller must run on a Mac | — | The standard Mac build includes Apple Silicon GPU (MPS) support. |
+
+The CUDA build is bigger only because it bundles NVIDIA's GPU libraries (the CUDA
+PyTorch wheel alone is 2.6 GB; the CPU one is 0.12 GB). The app's code and features are
+identical. The app itself tells you which build you have and what the other would cost:
+open **System info → About this build**.
+
+> The CPU-only figures above were measured on the build in `Builds/`. CUDA figures are
+> estimates until that build is made.
+
+Previous v1.0 downloads (2D only) are still available:
+[Windows CUDA+CPU](https://drive.google.com/file/d/1ClNAU_mkHNnzlQDilBhAa9ydD4ia8BnC/view?usp=sharing) ·
+[Windows Lite (CPU only)](https://drive.google.com/file/d/1g2d8emD4bNysEY3YSSM8y1v1na4PBy87/view?usp=sharing) ·
+[Mac](https://drive.google.com/file/d/1KKf73MwBig9xoRCB49N-I_iq6IRz55ia/view)
 
 ---
 
 ## Contents
 
-- [Screenshots](#screenshots)
+- [What's new](#whats-new)
 - [Overview](#overview)
 - [Features](#features)
-- [Supported Model Architectures](#supported-model-architectures)
+- [Supported model architectures](#supported-model-architectures)
+- [3D segmentation](#3d-segmentation)
+- [Accessibility](#accessibility)
 - [Installation](#installation)
-  - [Windows](#-windows)
-  - [Mac](#-mac)
-- [Running from Source](#running-from-source)
-- [Building the Desktop App Yourself](#building-the-desktop-app-yourself)
-- [How It Works](#how-it-works)
-- [Project Structure](#project-structure)
+- [Running from source](#running-from-source)
+- [Building the desktop app yourself](#building-the-desktop-app-yourself)
+- [Test datasets](#test-datasets)
+- [Tests](#tests)
+- [Project structure](#project-structure)
 - [Requirements](#requirements)
-- [Tech Stack](#tech-stack)
 - [Contributing](#contributing)
-- [License](#license)
 
 ---
 
-## Screenshots
+## What's new
 
-<div align="center">
-<img src="https://i.postimg.cc/PqL2ZMxP/image1.webp" width="800" alt="EdSeg dataset selection screen" />
-<br /><br />
-<img src="https://i.postimg.cc/Bv8MDC6t/image02.webp" width="800" alt="EdSeg training screen with live charts" />
-<br /><br />
-<img src="https://i.postimg.cc/k5Vf8y45/image-2.webp" width="800" alt="EdSeg results screen with confusion matrix" />
-<br /><br />
-<img src="https://i.postimg.cc/Zq9V3LRW/image3.webp" width="800" alt="EdSeg hyperparameter tuning screen" />
-</div>
+- **13 models, not just U-Nets** — depth-wise separable, attention-gated, nested, residual, dilated-pyramid and Mamba state-space designs, all small enough for a laptop CPU.
+- **3D segmentation** for CT/MRI volumes (`.nii`, `.nii.gz`, `.npy`) with a **Lightweight 3D U-Net**, **GMANet 3D** and **Light-VM3D-UNet**, plus a slice viewer.
+- **Accessible UI**: full keyboard use, visible focus, screen-reader labels and announcements, text-size control, WCAG-AA colour contrast, tables behind every chart, reduced-motion support.
+- **Build-size notices** in the app and docs, and a one-command build that verifies the packaged app before you ship it.
+- Many bug fixes (see `DEVELOPMENT_LOG.md`, *Stage 13*).
 
 ---
 
 ## Overview
 
 EdSeg is an educational platform built for medical imaging students to learn
-**how deep learning works** by actually training their own 2D image
+**how deep learning works** by actually training their own 2D and 3D
 segmentation models — on real (or synthetic sample) CT, X-ray, and MRI-style
-images — without writing a single line of code.
+data — without writing a single line of code.
 
 Everything runs **locally on the student's own machine** as a real desktop
 app. No cloud costs, no server to maintain, no account to create. Pick a
@@ -71,163 +87,193 @@ architecture, or the amount of training data.
 
 ## Features
 
-### 🧩 Core workflow
-- 📊 **Dataset management** — use the bundled sample dataset or upload your own (`images/` + `masks/` zip)
-- ⚙️ **Model & hyperparameter setup** — pick an architecture and tune learning rate, epochs, batch size, validation split, and dataset size with sliders
-- 🏋️ **Live training** — real-time loss curves, Dice/IoU charts, and a live prediction preview that improves epoch by epoch
-- 💾 **Checkpointing & resume** — training saves automatically every 5 epochs; pick up exactly where you left off
-- 📈 **Results & metrics** — confusion matrix, precision/recall/Dice/IoU/accuracy, all with plain-language explanations of what each one means
-- 🔍 **Model library & inference** — save trained models, load them later, and test them on brand-new images
-- ⚖️ **Compare runs** — view two completed training runs side by side, on matching scales
+### Core workflow
+- **Dataset management** — bundled 2D and 3D samples, or upload your own (`images/` + `masks/` zip)
+- **Model & hyperparameter setup** — architecture, learning rate, epochs, batch size, image/volume size, validation split, dataset size
+- **Live training** — loss and Dice/IoU charts, a live prediction preview, and a **"Behind the scenes" animation** that shows what happens inside each training step (data → preprocess → model → prediction → loss → gradients → weight update → validation) and ends on "Final output ready". It has a Pause button and respects the system *reduce motion* setting
+- **Checkpointing & resume** — saved every 5 epochs; continue exactly where you stopped
+- **Results & metrics** — confusion matrix, precision/recall/Dice/IoU/accuracy with plain-language explanations
+- **Model library & inference** — save trained models, test on a single new image or volume, or on a whole dataset
+- **Compare runs** — two runs side by side on matching scales
 
-### 🚀 Advanced
-- 🧪 **Hyperparameter tuning (grid search)** — sweep up to 3 parameters at once, with automatic hard caps to keep runs fast
-- 🖥️ **CPU / GPU toggle** — auto-detects CUDA (NVIDIA) and MPS (Apple Silicon); compare training speed across devices
-- 📚 **Concepts panel** — a built-in glossary explaining loss functions, overfitting, Dice score, and more, in plain language
-- 🌗 **Light & dark themes**
+### Advanced
+- **Hyperparameter sweeps (grid search)** with hard caps to keep runs quick
+- **CPU / GPU choice** — auto-detects CUDA and Apple Silicon (MPS); explains clearly when a GPU option isn't available
+- **Concepts panel** — glossary incl. voxels, 3D segmentation, state-space models, attention
+- **Light & dark themes**, adjustable text size
 
 ---
 
-## Supported Model Architectures
+## Supported model architectures
 
-| Architecture | Size | Notes |
+**2D image models**
+
+| Architecture | Parameters | Idea |
 |---|---|---|
-| Mini U-Net | ~30K params | Default — fastest, ideal for a first run |
-| Standard Mini U-Net | ~480K params | More capacity, still CPU-fast |
-| Simple CNN Encoder-Decoder | ~106K params | No skip connections — compare against the U-Nets to see what skip connections actually do |
-| Full U-Net | ~31M params | The real, unscaled architecture — noticeably slower, included for direct comparison against the lightweight models |
+| Mini U-Net | 30 K | Smallest U-Net — fastest first run |
+| Standard Mini U-Net | 483 K | More capacity, still CPU-fast |
+| Mobile U-Net | 100 K | Depth-wise separable convolutions (MobileNet idea) |
+| LinkNet-Lite | 180 K | Residual encoder, *additive* skips |
+| Attention U-Net | 275 K | Attention-gated skip connections |
+| DeepLab-Lite | 237 K | Dilated (atrous) pyramid pooling |
+| U-Net++ | 139 K | Nested, densely connected skips |
+| Light-VM2D-UNet | 358 K | Mamba-style state-space blocks (LightM-UNet idea) |
+| Simple CNN Encoder-Decoder | 106 K | No skip connections — shows what skips add |
+| Full U-Net | 31 M | The original, unscaled architecture |
+
+**3D volume models**
+
+| Architecture | Parameters | Idea |
+|---|---|---|
+| Lightweight 3D U-Net | 351 K | The standard 3D baseline, kept narrow |
+| Light-VM3D-UNet | 210 K | Mamba-style state-space blocks over the volume |
+| GMANet 3D | 477 K | Gated skips + multi-scale channel attention + dense local blocks |
+
+> **Please read:** these are compact, readable re-implementations of each architecture's
+> *ideas*, sized for CPU training and teaching — not the research authors' released code,
+> and they ship without pretrained weights. **Light-VM-UNet** follows the layout of
+> *LightM-UNet* (Liao et al., 2024: residual Vision-Mamba layers, additive skips). The
+> Mamba scan is written in plain PyTorch (a parallel prefix scan, verified against a
+> sequential reference) so it runs on CPU — the official `mamba_ssm` needs a CUDA-only
+> kernel. **GMANet** is an educational interpretation: I could not find a published model
+> of exactly that name, so it combines attention-gated skips with the multi-scale channel
+> attention idea of *LGMANet* (a 2D paper). If you meant a specific paper, tell us and the
+> model can be aligned to it.
+
+---
+
+## 3D segmentation
+
+Pick a 3D dataset and the model list switches to the 3D models. Volumes are normalised
+(outlier clipping + z-score) and resized to a cube (default 32³, up to 64³), and
+cached so later epochs are fast. Results show a slice viewer (slider, ‹ ›, arrow keys)
+for image / ground truth / prediction.
+
+**Dataset format** — a zip with `images/` and `masks/` folders and matching names:
+
+```
+my_mri.zip
+  images/patient_001.nii.gz
+  masks/patient_001.nii.gz
+```
+
+Masks are binary (any value > 0 is foreground). Images and masks must be the same size.
+A bundled synthetic dataset, **Sample Blobs 3D**, lets you try 3D immediately.
+3D training is much heavier than 2D: keep the volume size and batch size small on a CPU.
+
+---
+
+## Accessibility
+
+- **Keyboard**: every control is reachable and operable with the keyboard; focus is always visible; a *Skip to main content* link; `Esc` closes dialogs and panels and returns focus.
+- **Screen readers**: landmarks and one heading per screen (focus moves to it on navigation); labelled controls; slider values announced in real units (e.g. "Learning rate 0.001"); live regions for training progress and results; the current page is marked in the navigation.
+- **Charts** are never the only source of information: each has a text summary and a *View as table* section, and series differ by line style and marker, not just colour.
+- **Visuals**: text and controls meet WCAG 2.1 AA contrast in both themes; text size can be raised up to 150 %; the layout works from phone width up; animations stop with *reduce motion*; Windows high-contrast mode is supported.
+- Browser-style pop-ups were replaced by accessible dialogs.
 
 ---
 
 ## Installation
 
-No Python, no dependencies, no admin rights required — just download, extract, and run.
+> **Full step-by-step instructions for Windows (CPU-only and NVIDIA CUDA) and Mac, for running from source or building the app yourself, are in [`INSTALL.md`](./INSTALL.md).**
 
-### 🪟 Windows
+No Python, no dependencies, no admin rights required — download, extract, run.
 
-1. **Download** the app: **[EdSeg for Windows](https://drive.google.com/file/d/1ClNAU_mkHNnzlQDilBhAa9ydD4ia8BnC/view?usp=sharing)** (Lite version linked at top of Readme)
-2. **Extract the zip fully** to a normal folder (Desktop, Documents, etc.) — don't run it from inside the zip
-3. Open the extracted `EdSeg` folder and **double-click `EdSeg.exe`**
-4. Windows will likely show a **"Windows protected your PC"** SmartScreen warning, since this isn't a signed commercial app:
-   - Click **"More info"**
-   - Click **"Run anyway"**
-   
-   This only appears the first time.
-5. A loading screen appears briefly, then the app opens
+### Windows
+1. Download the zip (see sizes above) and **extract it fully** to a normal folder — not from inside the zip.
+2. Open the extracted `EdSeg` folder and double-click `EdSeg.exe`.
+3. Windows may show a SmartScreen warning (the app isn't code-signed): **More info → Run anyway**. Only the first time.
 
-> ⚠️ Keep `EdSeg.exe` inside its folder — it depends on the other files shipped alongside it (the `_internal` folder). Moving just the `.exe` on its own will break it.
+> **Window engine:** EdSeg draws its window with Microsoft's *Edge WebView2 Runtime* (preinstalled on Windows 11 and most Windows 10). If it is missing, EdSeg opens in your normal web browser instead and shows a small box — keep it open while you work, click OK to quit. Installing the free WebView2 Runtime from Microsoft gives the normal app window.
+>
+> Keep `EdSeg.exe` inside its folder — it needs the `_internal` folder beside it.
+> Your checkpoints, saved models and uploaded datasets are saved next to `EdSeg.exe`.
 
-### 🍎 Mac
-
-1. **Download** the app: **[EdSeg for Mac](https://drive.google.com/file/d/1KKf73MwBig9xoRCB49N-I_iq6IRz55ia/view)**
-2. **Extract the zip** if it isn't already
-3. **Right-click** `EdSeg.app` → **Open** (don't double-click the first time)
-4. macOS will warn that the app is from an "unidentified developer" — click **Open** again to confirm
-   
-   This only appears the first time; after that, you can open it normally.
-5. A loading screen appears briefly, then the app opens
+### Mac
+Right-click `EdSeg.app` → **Open** the first time, then **Open** again.
 
 ---
 
-## Running from Source
-
-For development, or if you'd rather not use the packaged app:
+## Running from source
 
 ```bash
-git clone https://github.com/yourusername/edseg.git
-cd edseg
 python -m venv venv
-source venv/bin/activate      # Windows: venv\Scripts\activate
+venv\Scripts\activate          # macOS/Linux: source venv/bin/activate
 pip install -r requirements.txt
+pip install torch --index-url https://download.pytorch.org/whl/cpu   # or the CUDA index, see requirements.txt
 python backend/app.py
 ```
+Then open `http://127.0.0.1:5000`.
 
-Then open `http://127.0.0.1:5000` in your browser.
+## Building the desktop app yourself
 
-## Building the Desktop App Yourself
-
-See [`BUILD_INSTRUCTIONS.md`](./BUILD_INSTRUCTIONS.md) for full Windows and
-Mac build steps using PyInstaller. Short version:
+See [`BUILD_INSTRUCTIONS.md`](./BUILD_INSTRUCTIONS.md). In short:
 
 ```bash
-python -m venv build_venv
-source build_venv/bin/activate    # Windows: build_venv\Scripts\activate
-pip install Flask Pillow numpy pywebview pyinstaller torch
-pyinstaller launcher.spec --noconfirm
+pyinstaller launcher.spec --noconfirm --clean
+python build_tools/finalize_build.py --dist dist/EdSeg --flavor cpu --out release --scratch scratch
 ```
-
-Your app appears at `dist/EdSeg/EdSeg.exe` (Windows) or `dist/EdSeg/EdSeg.app` (Mac).
-
-> PyInstaller can't cross-compile — build on Windows for the `.exe`, and on a Mac for the `.app`.
+`finalize_build.py` self-tests the packaged app, records the real sizes, and writes the zip.
 
 ---
 
-## How It Works
+## Test datasets
 
-EdSeg pairs a lightweight **Flask + PyTorch backend** with a browser-based
-frontend, wrapped in a native desktop window via
-[`pywebview`](https://pywebview.flowrl.com/). When packaged with
-PyInstaller, the whole thing — Python runtime, PyTorch, the web UI, and a
-bundled sample dataset — ships as a double-click app, with no
-server, no cloud, and no ongoing hosting cost.
+Public datasets used to test EdSeg (not bundled; download separately and respect their licences):
 
+| Dataset | Type | Size | Licence / source |
+|---|---|---|---|
+| Kvasir-SEG (polyp segmentation, 1000 images) | 2D | 46 MB | Free for research & education — Simula |
+| Medical Segmentation Decathlon — Hippocampus (260 MRI volumes) | 3D | 28 MB | CC-BY-SA 4.0 |
+| Medical Segmentation Decathlon — Spleen (CT) | 3D | 1.6 GB | CC-BY-SA 4.0 |
+
+`python tools/prepare_datasets.py --raw <downloads> --out <folder>` converts them into
+upload-ready zips. On a 2D polyp dataset the lightweight models reach Dice ≈ 0.45–0.5
+after 12 epochs on 160 training images; on hippocampus MRI the 3D models reach Dice ≈ 0.86–0.89.
+
+## Tests
+
+```bash
+python backend/scripts/test_models.py        # every model, 2D and 3D
+python backend/scripts/test_security.py      # path / upload hardening
+python backend/scripts/test_real_datasets.py # end-to-end on the public datasets (if downloaded)
 ```
-Browser-rendered UI  ⇄  Local Flask API  ⇄  PyTorch training/inference
-        (frontend/)          (backend/)         (CPU or GPU)
-```
-
-All student data (trained checkpoints, saved models, exported reports,
-uploaded datasets) is written to a folder next to the app itself, so it
-persists across sessions and across app updates.
+Plus the training, resume, results, tuning, safety and API suites in `backend/scripts/`.
+A packaged build verifies itself with `EdSeg.exe --selftest report.json`.
 
 ---
 
-## Project Structure
+## Project structure
 
 ```
 edseg/
-├── launcher.py              # Desktop entry point (Flask + pywebview)
-├── launcher.spec            # PyInstaller build configuration
-├── backend/                 # Flask API, training loop, model architectures
-│   ├── app.py
-│   ├── train.py
-│   ├── models.py
-│   ├── tuning.py
-│   └── ...
-├── frontend/                 # HTML / CSS / JS UI
-├── datasets/sample_shapes/   # Bundled synthetic sample dataset
-├── requirements.txt
-└── BUILD_INSTRUCTIONS.md
+├── launcher.py / launcher.spec     # desktop entry point + PyInstaller config
+├── backend/
+│   ├── app.py  train.py  job_manager.py  tuning.py  sweeps.py
+│   ├── models.py  models_lite.py  models_3d.py  ssm.py   # architectures
+│   ├── dataset_utils.py  segmentation_dataset.py  volume_utils.py
+│   ├── results.py  inference.py  model_library.py  build_info.py
+│   └── scripts/                    # test + data-generation scripts
+├── frontend/                       # index.html, style.css, js/*.js (no build step)
+├── build_tools/finalize_build.py   # self-test + measure + zip
+├── tools/prepare_datasets.py
+├── datasets/sample_shapes/  datasets/sample_blobs_3d/
+└── requirements.txt  BUILD_INSTRUCTIONS.md  DEVELOPMENT_LOG.md
 ```
-
----
 
 ## Requirements
 
-- Python 3.10+ *(only needed if running from source or building — not for the packaged app)*
-- ~2GB free disk space for a built desktop app (more if built with CUDA support)
-- No GPU required — the app is designed to train quickly on CPU alone; GPU acceleration is auto-detected and optional
+- Python 3.10+ *(only to run from source or build)*
+- Packaged app: ≈ 0.5 GB disk (CPU-only) or ≈ 5.6 GB (CUDA); no GPU required
 
-## Tech Stack
+## Licence
 
-- **Backend:** Python, Flask, PyTorch
-- **Frontend:** vanilla HTML/CSS/JavaScript (no framework, no build step)
-- **Packaging:** PyInstaller, pywebview
-
----
+EdSeg is released under the **MIT License** (see [`LICENSE`](./LICENSE)), © 2026 Syed Mohammad Jarif Tahmid. EdSeg is an educational tool and is **not a medical device** – it must not be used to make clinical decisions.
+The open-source components it bundles keep their own licences, listed with full texts in [`THIRD_PARTY_NOTICES.txt`](./THIRD_PARTY_NOTICES.txt) (also shipped inside every build).
 
 ## Contributing
 
-Issues and pull requests are welcome. If you're adding a new dataset,
-model architecture, or feature, please check
-[`DEVELOPMENT_LOG.md`](./DEVELOPMENT_LOG.md) first — it documents the
-project's full build history and the reasoning behind key design
-decisions (why certain paths are resolved the way they are, why
-checkpoints are stored where they are, etc.).
-
-## License
-
-This project is open source.
+Issues and pull requests are welcome. Please read [`DEVELOPMENT_LOG.md`](./DEVELOPMENT_LOG.md) first.
 
 ---
 
